@@ -42,11 +42,18 @@ public class ApiGatewayApplication {
 		return builder.routes()
 				.route(p -> p.
 						path("/auth/**").uri("http://localhost:5000"))
-				.route(p -> p.path("/users").uri("http://localhost:5000"))
+				.route(p -> p
+						.path("/users/**")
+						.filters(f -> f.filter(authenticationFilter))
+						.uri("http://localhost:5000"))
 				.route(p -> p
 						.path("/profile/**")
 						.filters(f -> f.filter(authenticationFilter))
 						.uri("http://localhost:5001"))
+				.route(p -> p
+						.path("/events/**")
+						.filters(f -> f.filter(authenticationFilter))
+						.uri("http://localhost:5002"))
 				.build();
 	}
 
